@@ -59,19 +59,19 @@ PlantTalker is a comprehensive multi-threaded plant care system that monitors en
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     Web Browser (Client)                     │
-│              React + Vite + Tailwind + Socket.IO             │
+│                     Web Browser (Client)                    │
+│              React + Vite + Tailwind + Socket.IO            │
 └───────────────────────┬─────────────────────────────────────┘
                         │ HTTP/WebSocket
                         │ Port 3000 → 5000
 ┌───────────────────────▼─────────────────────────────────────┐
-│                   Flask API Server                           │
-│              REST API + Socket.IO (Port 5000)                │
+│                   Flask API Server                          │
+│              REST API + Socket.IO (Port 5000)               │
 └───────────────────────┬─────────────────────────────────────┘
                         │
 ┌───────────────────────▼─────────────────────────────────────┐
-│                  System State Manager                        │
-│            (Thread-safe data coordination)                   │
+│                  System State Manager                       │
+│            (Thread-safe data coordination)                  │
 └─┬─────┬─────┬──────┬──────┬──────┬───────────────────────┬──┘
   │     │     │      │      │      │                       │
   ▼     ▼     ▼      ▼      ▼      ▼                       ▼
@@ -79,8 +79,8 @@ PlantTalker is a comprehensive multi-threaded plant care system that monitors en
 │DHT│ │LED│ │UART│ │BTN│ │SERV│ │ LLM│              │  Ollama  │
 │ 22│ │Ctl│ │ESP │ │HDL│ │ O  │ │ IF │◄────────────►│  Service │
 └─┬─┘ └─┬─┘ └──┬─┘ └─┬─┘ └──┬─┘ └────┘              │llama3.2  │
-  │     │      │      │      │                        └──────────┘
-  ▼     ▼      ▼      ▼      ▼
+  │     │      │     │      │                       └──────────┘
+  ▼     ▼      ▼     ▼      ▼
 ┌──────────────────────────────────┐
 │     Raspberry Pi 5 GPIO          │
 │  (Hardware Pins & Interfaces)    │
