@@ -1,0 +1,8 @@
+adafruit-circuitpython-dht>=4.0.10
+gpiozero>=2.0.1
+pyserial>=3.5
+ollama>=0.1.0
+lgpio>=0.2.2.0
+flask>=3.1.2
+flask-socketio>=5.5.1
+flask-cors>=6.0.1

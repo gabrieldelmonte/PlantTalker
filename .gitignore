@@ -1,0 +1,14 @@
+# Ignoring virtual environment directories
+venv_planttalker/
+
+# Ignoring Python cache files
+__pycache__/
+
+# Ignoring temporary files
+.lgd-nfy0
+
+# Ignoring node modules
+node_modules/
+
+# Ignoring log files
+logs/
