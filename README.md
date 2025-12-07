@@ -4,7 +4,7 @@
 
 PlantTalker is a comprehensive multi-threaded plant care system that monitors environmental conditions, automates irrigation, and provides an AI-powered chat interface to interact with your plant. Built with modern web technologies and local LLM integration, it combines real-time sensor monitoring with an intuitive web dashboard.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![License](https://img.shields.io/badge/license-AGPL--3.0-blue)
 ![Python](https://img.shields.io/badge/python-3.7+-brightgreen.svg)
 ![Node](https://img.shields.io/badge/node-24.x-green.svg)
 ![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi%205-red.svg)
@@ -808,7 +808,7 @@ Contributions are welcome! Here's how you can help:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -859,6 +859,6 @@ Current Version: **1.0.0**
 
 ---
 
-**Made with ❤️ for plants and technology enthusiasts**
+**Made with ❤️  for plants and technology enthusiasts**
 
 *Happy planting! 🌱*
