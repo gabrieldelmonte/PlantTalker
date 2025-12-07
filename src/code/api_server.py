@@ -25,7 +25,7 @@ from iot.libs.llm_interface import LLMInterface
 
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading', logger=False, engineio_logger=False)
 
 # Global system instance
 plant_system = None
@@ -60,19 +60,23 @@ class PlantTalkerAPI:
     def _on_button_pressed(self):
         print("[API] Button pressed - triggering irrigation check")
         time.sleep(0.2)
-
+        
         state = self.system_state.get_full_state()
         soil_moisture = state['soil_moisture']
-
+        
         if soil_moisture is None:
             time.sleep(2)
             state = self.system_state.get_full_state()
             soil_moisture = state['soil_moisture']
-
+        
         if soil_moisture is not None and soil_moisture > 0:
+            # Update LEDs before irrigation
+            print(f"[API] Updating LEDs for moisture: {soil_moisture}%")
+            self.led_controller.update_leds(soil_moisture)
+            
             result = self.servo_controller.irrigate()
             print(f"[API] Irrigation triggered: {result}")
-
+            
             # Broadcast irrigation event
             socketio.emit('irrigation_event', {
                 'timestamp': time.time(),
@@ -134,8 +138,15 @@ def trigger_irrigation():
         return jsonify({'error': 'System not initialized'}), 500
 
     print("[API] Manual irrigation requested via API")
+    
+    # Update LEDs before irrigation
+    state = plant_system.get_state()
+    if state and state.get('soil_moisture') is not None:
+        print(f"[API] Updating LEDs for moisture: {state['soil_moisture']}%")
+        plant_system.led_controller.update_leds(state['soil_moisture'])
+    
     result = plant_system.irrigate()
-
+    
     # Broadcast to all clients
     socketio.emit('irrigation_event', {
         'timestamp': time.time(),
@@ -219,18 +230,24 @@ def handle_status_request():
 def broadcast_status():
     """Broadcast system status to all connected clients periodically"""
     global plant_system
-
+    
     print("[API] Starting status broadcast thread")
-
+    
     while plant_system and plant_system.running:
         try:
             state = plant_system.get_state()
+            
+            # Update LEDs based on soil moisture
+            soil_moisture = state.get('soil_moisture')
+            if soil_moisture is not None:
+                plant_system.led_controller.update_leds(soil_moisture)
+            
             socketio.emit('status_update', state)
             time.sleep(2)  # Update every 2 seconds
         except Exception as e:
             print(f"[API] Broadcast error: {e}")
             time.sleep(5)
-
+    
     print("[API] Status broadcast thread stopped")
 
 
@@ -276,7 +293,7 @@ def main():
 
     try:
         # Start Flask-SocketIO server
-        socketio.run(app, host='0.0.0.0', port=5000, debug=False, allow_unsafe_werkzeug=True)
+        socketio.run(app, host='0.0.0.0', port=5000, debug=False, allow_unsafe_werkzeug=True, use_reloader=False)
     except KeyboardInterrupt:
         print("\n[API] Shutting down...")
     finally:
